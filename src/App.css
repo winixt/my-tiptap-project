@@ -1,6 +1,41 @@
+
+.App {
+  width: 800px;
+  margin: 200px auto;
+}
+
+.MenuBar {
+  border: 1px solid #ccc;
+  border-bottom: 0;
+}
+
+.MenuBar .btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 16px;
+}
+
+
+.MenuBar .btn-icon.is-active {
+  color: #06c;
+}
+
+.ProseMirror {
+  outline: none;
+  border: 1px solid #ccc;
+  margin: 0;
+}
+
 /* Basic editor styles */
 .ProseMirror > * + * {
   margin-top: 0.75em;
+}
+
+.ProseMirror p {
+  margin: 0;
 }
 
 .ProseMirror ul,

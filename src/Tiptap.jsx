@@ -1,13 +1,179 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import classnames from 'classnames';
+import Underline from '@tiptap/extension-underline';
+import { Color } from '@tiptap/extension-color';
+import TextStyle from '@tiptap/extension-text-style'
+
+import BoldIcon from './icons/bold';
+import ItalicIcon from './icons/italic';
+import UnderlineIcon from './icons/underline';
+
+import ColorPicker from './components/color-picker';
+
+const MenuBar = ({ editor }) => {
+  if (!editor) {
+    return null
+  }
+
+  return (
+    <div className="MenuBar">
+      <button
+        onClick={() => editor.chain().focus().toggleBold().run()}
+        disabled={
+          !editor.can()
+            .chain()
+            .focus()
+            .toggleBold()
+            .run()
+        }
+        className={classnames(['btn-icon', editor.isActive('bold') ? 'is-active' : ''])}
+      >
+        <BoldIcon />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleItalic().run()}
+        disabled={
+          !editor.can()
+            .chain()
+            .focus()
+            .toggleItalic()
+            .run()
+        }
+        className={classnames(['btn-icon', editor.isActive('italic') ? 'is-active' : ''])}
+      >
+        <ItalicIcon />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
+        disabled={
+          !editor.can()
+            .chain()
+            .focus()
+            .toggleUnderline()
+            .run()
+        }
+        className={classnames(['btn-icon', editor.isActive('underline') ? 'is-active' : ''])}
+      >
+        <UnderlineIcon />
+      </button>
+      <ColorPicker />
+      <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>
+        clear marks
+      </button>
+      <button onClick={() => editor.chain().focus().clearNodes().run()}>
+        clear nodes
+      </button>
+      <button
+        onClick={() => editor.chain().focus().setParagraph().run()}
+        className={editor.isActive('paragraph') ? 'is-active' : ''}
+      >
+        paragraph
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+        className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
+      >
+        h1
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+        className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
+      >
+        h2
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+        className={editor.isActive('heading', { level: 3 }) ? 'is-active' : ''}
+      >
+        h3
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
+        className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
+      >
+        h4
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
+        className={editor.isActive('heading', { level: 5 }) ? 'is-active' : ''}
+      >
+        h5
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
+        className={editor.isActive('heading', { level: 6 }) ? 'is-active' : ''}
+      >
+        h6
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        className={editor.isActive('bulletList') ? 'is-active' : ''}
+      >
+        bullet list
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        className={editor.isActive('orderedList') ? 'is-active' : ''}
+      >
+        ordered list
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        className={editor.isActive('codeBlock') ? 'is-active' : ''}
+      >
+        code block
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        className={editor.isActive('blockquote') ? 'is-active' : ''}
+      >
+        blockquote
+      </button>
+      <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
+        horizontal rule
+      </button>
+      <button onClick={() => editor.chain().focus().setHardBreak().run()}>
+        hard break
+      </button>
+      <button
+        onClick={() => editor.chain().focus().undo().run()}
+        disabled={
+          !editor.can()
+            .chain()
+            .focus()
+            .undo()
+            .run()
+        }
+      >
+        undo
+      </button>
+      <button
+        onClick={() => editor.chain().focus().redo().run()}
+        disabled={
+          !editor.can()
+            .chain()
+            .focus()
+            .redo()
+            .run()
+        }
+      >
+        redo
+      </button>
+    </div>
+  )
+}
 
 const Tiptap = () => {
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, Underline, TextStyle, Color],
     content: "<p>Hello World! 🌎️</p>",
   });
 
-  return <EditorContent editor={editor} />;
+  return <div>
+  <MenuBar editor={editor} />
+  <EditorContent editor={editor} />
+  </div>
 };
 
 export default Tiptap;
