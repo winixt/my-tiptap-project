@@ -4,16 +4,21 @@ import classnames from 'classnames';
 import Underline from '@tiptap/extension-underline';
 import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight'
-import TextStyle from '@tiptap/extension-text-style'
+import TextStyle from '@tiptap/extension-text-style';
+import Link from '@tiptap/extension-link';
+import TextAlign from '@tiptap/extension-text-align';
 
 import BoldIcon from './icons/bold';
 import ItalicIcon from './icons/italic';
 import UnderlineIcon from './icons/underline';
 import OrderedListIcon from './icons/ordered-list';
 import BulletListIcon from './icons/bullet-list';
+import RedoIcon from './icons/redo'
+import UndoIcon from './icons/undo'
 
 import ColorPicker from './components/color-picker';
 import HeadPicker from './components/head-picker';
+import TextAlignPicker from './components/text-align-picker';
 
 const COLORS = [
   '#000',
@@ -124,51 +129,7 @@ const MenuBar = ({ editor }) => {
       >
         <BulletListIcon />
       </button>
-      <button
-        onClick={() => editor.chain().focus().setParagraph().run()}
-        className={editor.isActive('paragraph') ? 'is-active' : ''}
-      >
-        paragraph
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
-      >
-        h1
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
-      >
-        h2
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className={editor.isActive('heading', { level: 3 }) ? 'is-active' : ''}
-      >
-        h3
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-        className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
-      >
-        h4
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-        className={editor.isActive('heading', { level: 5 }) ? 'is-active' : ''}
-      >
-        h5
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-        className={editor.isActive('heading', { level: 6 }) ? 'is-active' : ''}
-      >
-        h6
-      </button>
-      <button onClick={() => editor.chain().focus().setHardBreak().run()}>
-        hard break
-      </button>
+      <TextAlignPicker currentAlign={['left', 'right', 'center', 'justify'].find(align => editor.isActive({textAlign: align}))} onSelect={(align) => editor.chain().focus().setTextAlign(align).run() }  />
       <button
         onClick={() => editor.chain().focus().undo().run()}
         disabled={
@@ -178,8 +139,9 @@ const MenuBar = ({ editor }) => {
             .undo()
             .run()
         }
+        className="btn-icon"
       >
-        undo
+        <UndoIcon />
       </button>
       <button
         onClick={() => editor.chain().focus().redo().run()}
@@ -190,8 +152,9 @@ const MenuBar = ({ editor }) => {
             .redo()
             .run()
         }
+        className="btn-icon"
       >
-        redo
+        <RedoIcon />
       </button>
     </div>
   )
@@ -199,11 +162,19 @@ const MenuBar = ({ editor }) => {
 
 const Tiptap = () => {
   const editor = useEditor({
-    extensions: [StarterKit, Underline, TextStyle, Color, Highlight.configure({ multicolor: true })],
+    extensions: [StarterKit, Underline, TextStyle, Color, Highlight.configure({ multicolor: true }), TextAlign.configure({
+      types: ['heading', 'paragraph'],
+    })],
     content: "<p>Hello World! 🌎️</p>",
   });
 
+  const exportContent = () => {
+    const html = editor.getHTML();
+    console.log(html);
+  }
+
   return <div>
+    <button onClick={exportContent}>export</button>
   <MenuBar editor={editor} />
   <EditorContent editor={editor} />
   </div>

@@ -1,0 +1,7 @@
+import SvgIcon from './icon';
+
+const AlignJustifyIcon = (props) => {
+    return (<SvgIcon style={props.style} onClick={props.onClick} viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M128 298.666667h768a42.666667 42.666667 0 0 0 0-85.333334H128a42.666667 42.666667 0 0 0 0 85.333334z m768 85.333333H128a42.666667 42.666667 0 0 0 0 85.333333h768a42.666667 42.666667 0 0 0 0-85.333333z m0 170.666667H128a42.666667 42.666667 0 0 0 0 85.333333h768a42.666667 42.666667 0 0 0 0-85.333333z m0 170.666666H128a42.666667 42.666667 0 0 0 0 85.333334h768a42.666667 42.666667 0 0 0 0-85.333334z"></path></SvgIcon>)
+}
+
+export default AlignJustifyIcon;

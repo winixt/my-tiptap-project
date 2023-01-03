@@ -1,0 +1,7 @@
+import SvgIcon from './icon';
+
+const RedoIcon =  () => {
+    return (<SvgIcon viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M384 768h128v-85.333333H384c-70.570667 0-128-57.429333-128-128s57.429333-128 128-128h256v128l213.333333-170.666667-213.333333-170.666667v128H384c-117.632 0-213.333333 95.701333-213.333333 213.333334s95.701333 213.333333 213.333333 213.333333z"></path></SvgIcon>)
+}
+
+export default RedoIcon;
