@@ -3,21 +3,74 @@ import StarterKit from "@tiptap/starter-kit";
 import classnames from 'classnames';
 import Underline from '@tiptap/extension-underline';
 import { Color } from '@tiptap/extension-color';
+import Highlight from '@tiptap/extension-highlight'
 import TextStyle from '@tiptap/extension-text-style'
 
 import BoldIcon from './icons/bold';
 import ItalicIcon from './icons/italic';
 import UnderlineIcon from './icons/underline';
+import OrderedListIcon from './icons/ordered-list';
+import BulletListIcon from './icons/bullet-list';
 
 import ColorPicker from './components/color-picker';
+import HeadPicker from './components/head-picker';
+
+const COLORS = [
+  '#000',
+  'rgba(0, 0, 0, 0.9)',
+  'rgba(0, 0, 0, 0.6)',
+  'rgba(0, 0, 0, 0.5)',
+  'rgba(0, 0, 0, 0.35)',
+  'rgba(0, 0, 0, 0.2)',
+  'rgba(0, 0, 0, 0.16)',
+  'rgba(0, 0, 0, 0.06)',
+  'rgba(0, 0, 0, 0.05)',
+
+  '#B78B22',
+  '#DBAE31',
+  '#F2BD2A',
+  '#FFD143',
+  '#FFEF7E',
+  '#FFF9D9',
+
+  '#3153B7',
+  '#5C8EE6',
+  '#E0EDFF',
+
+  '#B63B19',
+  '#FE7832',
+  '#FEBD83',
+  '#FEEED5',
+
+  '#1A48AB',
+  '#2B7CF5',
+  '#85BDF9',
+  '#E4F3FF',
+
+  '#B72736',
+  '#FF5A4F',
+  '#FFE9DA',
+
+  '#56A12B',
+  '#98E059',
+  '#F3FCCD',
+
+  '#191919',
+  '#666666',
+  '#999999',
+  '#CCCCCC',
+  '#5C8FE6',
+  '#E7BB2C',
+];
 
 const MenuBar = ({ editor }) => {
   if (!editor) {
     return null
   }
-
+  
   return (
     <div className="MenuBar">
+      <HeadPicker currentLevel={editor.getAttributes('heading').level} onSelect={(level) => editor.chain().focus().toggleHeading({ level }).run() } />
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={
@@ -57,12 +110,19 @@ const MenuBar = ({ editor }) => {
       >
         <UnderlineIcon />
       </button>
-      <ColorPicker />
-      <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>
-        clear marks
+      <ColorPicker colors={COLORS} onSelect={(color) => editor.chain().focus().setColor(color).run()} />
+      <ColorPicker colors={COLORS} type="bg" onSelect={(color) => editor.chain().focus().toggleHighlight({ color }).run()} />
+      <button
+        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        className={classnames(['btn-icon', editor.isActive('orderedList') ? 'is-active' : ''])}
+      >
+        <OrderedListIcon />
       </button>
-      <button onClick={() => editor.chain().focus().clearNodes().run()}>
-        clear nodes
+      <button
+        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        className={classnames(['btn-icon', editor.isActive('bulletList') ? 'is-active' : ''])}
+      >
+        <BulletListIcon />
       </button>
       <button
         onClick={() => editor.chain().focus().setParagraph().run()}
@@ -106,33 +166,6 @@ const MenuBar = ({ editor }) => {
       >
         h6
       </button>
-      <button
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={editor.isActive('bulletList') ? 'is-active' : ''}
-      >
-        bullet list
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={editor.isActive('orderedList') ? 'is-active' : ''}
-      >
-        ordered list
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        className={editor.isActive('codeBlock') ? 'is-active' : ''}
-      >
-        code block
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        className={editor.isActive('blockquote') ? 'is-active' : ''}
-      >
-        blockquote
-      </button>
-      <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
-        horizontal rule
-      </button>
       <button onClick={() => editor.chain().focus().setHardBreak().run()}>
         hard break
       </button>
@@ -166,7 +199,7 @@ const MenuBar = ({ editor }) => {
 
 const Tiptap = () => {
   const editor = useEditor({
-    extensions: [StarterKit, Underline, TextStyle, Color],
+    extensions: [StarterKit, Underline, TextStyle, Color, Highlight.configure({ multicolor: true })],
     content: "<p>Hello World! 🌎️</p>",
   });
 
